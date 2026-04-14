@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCC - Registrar Actividad</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="contenedor">
+      <h1>DCC — Calidad de Vida</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="registro.html">Registrar Miembro</a></li>
+          <li><a href="actividades.html">Registrar Actividad</a></li>
+          <li><a href="miembros.html">Listado de Miembros</a></li>
+          <li><a href="metricas.html">Métricas</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="contenedor">
+
+      <h2>Registrar Actividad</h2>
+      <p class="aviso">Los campos marcados con * son obligatorios.</p>
+
+      <form id="form-actividad">
+
+        <fieldset>
+          <legend>Información general</legend>
+
+          <div class="campo">
+            <label for="nombre-actividad">Nombre de la actividad <span class="obligatorio">*</span></label>
+            <input type="text" id="nombre-actividad" name="nombre-actividad" placeholder="Taller de fotografía">
+            <span class="mensaje-error" id="error-nombre-actividad"></span>
+          </div>
+
+          <div class="campo">
+            <label for="tipo-actividad">Tipo de actividad <span class="obligatorio">*</span></label>
+            <select id="tipo-actividad" name="tipo-actividad">
+              <option value="">— Seleccione un tipo —</option>
+              <option value="artistica">Artística</option>
+              <option value="deportiva">Deportiva</option>
+              <option value="tecnologica">Tecnológica</option>
+              <option value="social">Social</option>
+              <option value="recreativa">Recreativa</option>
+            </select>
+            <span class="mensaje-error" id="error-tipo-actividad"></span>
+          </div>
+
+          <div class="campo">
+            <label for="descripcion">Descripción <span class="obligatorio">*</span></label>
+            <textarea id="descripcion" name="descripcion" placeholder="Descripción de la actividad (mínimo 20 caracteres)"></textarea>
+            <span class="mensaje-error" id="error-descripcion"></span>
+          </div>
+
+          <div class="campo">
+            <label for="miembro">RUT del miembro responsable <span class="obligatorio">*</span></label>
+            <input type="text" id="miembro" name="miembro" placeholder="12.345.678-9">
+            <span class="mensaje-error" id="error-miembro"></span>
+          </div>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>Horarios <span class="obligatorio">*</span></legend>
+          <p>Debe agregar al menos un horario.</p>
+
+          <div id="lista-horarios">
+            <!-- Los bloques de horario se agregan aquí por JS -->
+          </div>
+
+          <button type="button" class="btn btn-secundario" id="btn-agregar-horario">+ Agregar horario</button>
+          <span class="mensaje-error" id="error-horarios"></span>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>Archivos <span class="obligatorio">*</span></legend>
+          <p>Debe adjuntar al menos un archivo de foto o video.</p>
+
+          <div class="campo">
+            <label for="archivos">Fotos o videos</label>
+            <input type="file" id="archivos" name="archivos" multiple>
+            <span class="mensaje-error" id="error-archivos"></span>
+          </div>
+
+          <div id="preview-archivos"></div>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>Enlace a contenido</legend>
+
+          <div class="campo">
+            <label for="enlace">URL de contenido relacionado <span class="obligatorio">*</span></label>
+            <input type="url" id="enlace" name="enlace" placeholder="https://ejemplo.com/mi-actividad">
+            <span class="mensaje-error" id="error-enlace"></span>
+          </div>
+
+        </fieldset>
+
+        <button type="submit" class="btn btn-primario">Registrar actividad</button>
+
+      </form>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Departamento de Ciencias de la Computación — Universidad de Chile</p>
+  </footer>
+
+  <script src="js/actividades.js"></script>
+</body>
+</html>

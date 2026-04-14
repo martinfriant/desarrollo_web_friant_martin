@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DCC - Registrar Miembro</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="contenedor">
+      <h1>DCC — Calidad de Vida</h1>
+      <nav>
+        <ul>
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="registro.html">Registrar Miembro</a></li>
+          <li><a href="actividades.html">Registrar Actividad</a></li>
+          <li><a href="miembros.html">Listado de Miembros</a></li>
+          <li><a href="metricas.html">Métricas</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="contenedor">
+
+      <h2>Registrar Miembro</h2>
+      <p class="aviso">Los campos marcados con * son obligatorios.</p>
+
+      <form id="form-registro">
+          
+        <fieldset>
+          <legend>Datos personales</legend>
+
+          <div class="campo">
+            <label for="rut">RUT <span class="obligatorio">*</span></label>
+            <input type="text" id="rut" name="rut" placeholder="12.345.678-9">
+            <span class="mensaje-error" id="error-rut"></span>
+          </div>
+
+          <div class="campo">
+            <label for="nombre">Nombre completo <span class="obligatorio">*</span></label>
+            <input type="text" id="nombre" name="nombre" placeholder="Juan Pérez González">
+            <span class="mensaje-error" id="error-nombre"></span>
+          </div>
+
+          <div class="campo">
+            <label for="email">Correo electrónico <span class="obligatorio">*</span></label>
+            <input type="email" id="email" name="email" placeholder="juan@uchile.cl">
+            <span class="mensaje-error" id="error-email"></span>
+          </div>
+
+          <div class="campo">
+            <label for="telefono">Teléfono <span class="opcional">(opcional)</span></label>
+            <input type="tel" id="telefono" name="telefono" placeholder="+56912345678">
+            <span class="mensaje-error" id="error-telefono"></span>
+          </div>
+
+          <div class="campo">
+            <label for="direccion">Dirección <span class="opcional">(opcional)</span></label>
+            <input type="text" id="direccion" name="direccion" placeholder="Av. Universidad 123, Santiago">
+          </div>
+
+        </fieldset>
+
+        <fieldset>
+          <legend>Tipo de miembro</legend>
+
+          <div class="campo">
+            <label for="tipo">Tipo de miembro <span class="obligatorio">*</span></label>
+            <select id="tipo" name="tipo">
+              <option value="">— Seleccione un tipo —</option>
+              <option value="pregrado">Estudiante de pregrado</option>
+              <option value="postgrado">Estudiante de postgrado</option>
+              <option value="funcionario">Funcionario/a</option>
+              <option value="academico">Académico/a</option>
+            </select>
+            <span class="mensaje-error" id="error-tipo"></span>
+          </div>
+
+        </fieldset>
+
+        <!-- Campos adicionales según tipo, mostrados por JS -->
+
+        <fieldset id="campos-pregrado" class="oculto">
+          <legend>Datos de pregrado</legend>
+
+          <div class="campo">
+            <label for="carrera">Carrera <span class="obligatorio">*</span></label>
+            <input type="text" id="carrera" name="carrera" placeholder="Ingeniería Civil en Computación">
+            <span class="mensaje-error" id="error-carrera"></span>
+          </div>
+
+          <div class="campo">
+            <label for="anio-ingreso">Año de ingreso <span class="obligatorio">*</span></label>
+            <input type="number" id="anio-ingreso" name="anio-ingreso" min="2000" max="2025" placeholder="2022">
+            <span class="mensaje-error" id="error-anio-ingreso"></span>
+          </div>
+
+        </fieldset>
+
+        <fieldset id="campos-postgrado" class="oculto">
+          <legend>Datos de postgrado</legend>
+
+          <div class="campo">
+            <label for="programa">Programa <span class="obligatorio">*</span></label>
+            <select id="programa" name="programa">
+              <option value="">— Seleccione —</option>
+              <option value="magister">Magíster</option>
+              <option value="doctorado">Doctorado</option>
+            </select>
+            <span class="mensaje-error" id="error-programa"></span>
+          </div>
+
+          <div class="campo">
+            <label for="tutor">Tutor/a <span class="opcional">(opcional)</span></label>
+            <input type="text" id="tutor" name="tutor" placeholder="Nombre del tutor o tutora">
+          </div>
+
+        </fieldset>
+
+        <fieldset id="campos-funcionario" class="oculto">
+          <legend>Datos de funcionario/a</legend>
+
+          <div class="campo">
+            <label for="area">Área o unidad <span class="obligatorio">*</span></label>
+            <input type="text" id="area" name="area" placeholder="Secretaría de Estudios">
+            <span class="mensaje-error" id="error-area"></span>
+          </div>
+
+          <div class="campo">
+            <label for="cargo">Cargo <span class="obligatorio">*</span></label>
+            <input type="text" id="cargo" name="cargo" placeholder="Asistente administrativo">
+            <span class="mensaje-error" id="error-cargo"></span>
+          </div>
+
+        </fieldset>
+
+        <fieldset id="campos-academico" class="oculto">
+          <legend>Datos de académico/a</legend>
+
+          <div class="campo">
+            <label for="jerarquia">Jerarquía <span class="obligatorio">*</span></label>
+            <select id="jerarquia" name="jerarquia">
+              <option value="">— Seleccione —</option>
+              <option value="instructor">Instructor/a</option>
+              <option value="asistente">Profesor/a Asistente</option>
+              <option value="asociado">Profesor/a Asociado/a</option>
+              <option value="titular">Profesor/a Titular</option>
+            </select>
+            <span class="mensaje-error" id="error-jerarquia"></span>
+          </div>
+
+          <div class="campo">
+            <label for="departamento">Departamento <span class="obligatorio">*</span></label>
+            <input type="text" id="departamento" name="departamento" placeholder="Ciencias de la Computación">
+            <span class="mensaje-error" id="error-departamento"></span>
+          </div>
+
+        </fieldset>
+
+        <button type="submit" class="btn btn-primario">Registrar miembro</button>
+
+      </form>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Departamento de Ciencias de la Computación — Universidad de Chile</p>
+  </footer>
+
+  <script src="js/registro.js"></script>
+</body>
+</html>
