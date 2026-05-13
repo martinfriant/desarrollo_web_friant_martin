@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}DCC - Métricas{% endblock %}
+
+{% block contenido %}
+  <h2>Métricas e Indicadores</h2>
+
+  <section>
+    <h3>Resumen general</h3>
+    <div class="resumen-indicadores">
+      <div class="indicador">
+        <p class="numero">{{ total_miembros }}</p>
+        <p class="etiqueta">Total de miembros</p>
+      </div>
+      <div class="indicador">
+        <p class="numero">{{ total_actividades }}</p>
+        <p class="etiqueta">Total de actividades</p>
+      </div>
+      <div class="indicador">
+        <p class="numero">
+          {% if tipo_miembro_frecuente == 'pregrado' %}Est. Pregrado
+          {% elif tipo_miembro_frecuente == 'postgrado' %}Est. Postgrado
+          {% elif tipo_miembro_frecuente == 'funcionario' %}Funcionario/a
+          {% elif tipo_miembro_frecuente == 'academico' %}Académico/a
+          {% else %}{{ tipo_miembro_frecuente }}
+          {% endif %}
+        </p>
+        <p class="etiqueta">Tipo de miembro más frecuente</p>
+      </div>
+      <div class="indicador">
+        <p class="numero">{{ tipo_actividad_frecuente | capitalize }}</p>
+        <p class="etiqueta">Tipo de actividad más frecuente</p>
+      </div>
+    </div>
+  </section>
+{% endblock %}

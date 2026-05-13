@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}DCC - Gestión de Actividades{% endblock %}
+
+{% block contenido %}
+  <section>
+    <h2>Sistema de Gestión de Actividades</h2>
+    <p>
+      Bienvenido al sistema del Área de Calidad de Vida del Departamento de Ciencias de la
+      Computación (DCC). Los miembros de la comunidad pueden registrar y compartir
+      las actividades que realizan fuera de sus obligaciones académicas y laborales.
+    </p>
+  </section>
+
+  <section>
+    <h2>Accesos rápidos</h2>
+    <div class="tarjetas">
+      <a href="{{ url_for('registro') }}" class="tarjeta">
+        <h3>Registrar Miembro y Actividades</h3>
+        <p>Agrega un nuevo integrante y sus actividades al sistema.</p>
+      </a>
+      <a href="{{ url_for('miembros') }}" class="tarjeta">
+        <h3>Listado de Miembros</h3>
+        <p>Consulta, filtra y ordena los miembros registrados.</p>
+      </a>
+      <a href="{{ url_for('metricas') }}" class="tarjeta">
+        <h3>Métricas</h3>
+        <p>Indicadores y gráficos sobre miembros y actividades.</p>
+      </a>
+    </div>
+  </section>
+
+  <section>
+    <h2>Últimos miembros registrados</h2>
+    {% if ultimos %}
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Correo</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Fecha de registro</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for m in ultimos %}
+            <tr>
+              <td>{{ m.nombre }}</td>
+              <td>{{ m.email }}</td>
+              <td>
+                {% if m.tipo == 'pregrado' %}Est. Pregrado
+                {% elif m.tipo == 'postgrado' %}Est. Postgrado
+                {% elif m.tipo == 'funcionario' %}Funcionario/a
+                {% elif m.tipo == 'academico' %}Académico/a
+                {% endif %}
+              </td>
+              <td>{{ m.fecha_registro.strftime('%d/%m/%Y %H:%M') }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Aún no hay miembros registrados.</p>
+    {% endif %}
+  </section>
+{% endblock %}

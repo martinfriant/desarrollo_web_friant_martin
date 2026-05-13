@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}DCC - Gestión de Actividades{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+
+  <header>
+    <div class="contenedor">
+      <h1>DCC - Calidad de Vida</h1>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('index') }}">Inicio</a></li>
+          <li><a href="{{ url_for('registro') }}">Registrar Miembro y Actividades</a></li>
+          <li><a href="{{ url_for('miembros') }}">Listado de Miembros</a></li>
+          <li><a href="{{ url_for('metricas') }}">Métricas</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <div class="contenedor">
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for categoria, mensaje in messages %}
+            <div class="aviso aviso-{{ categoria }}">{{ mensaje }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block contenido %}{% endblock %}
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Departamento de Ciencias de la Computación - Universidad de Chile</p>
+  </footer>
+
+  {% block scripts %}{% endblock %}
+
+</body>
+</html>

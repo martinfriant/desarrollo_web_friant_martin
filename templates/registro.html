@@ -1,0 +1,231 @@
+{% extends "base.html" %}
+
+{% block title %}DCC - Registrar Miembro y Actividades{% endblock %}
+
+{% block contenido %}
+  <h2>Registrar Miembro y Actividades</h2>
+  <p class="aviso">Los campos marcados con <span class="obligatorio">*</span> son obligatorios.</p>
+
+  {% if errores.general %}
+    <p class="aviso aviso-error">{{ errores.general }}</p>
+  {% endif %}
+
+  <form id="form-registro" action="{{ url_for('registro') }}" method="POST" enctype="multipart/form-data" novalidate>
+
+    <fieldset>
+      <legend>Datos personales</legend>
+
+      <div class="campo {% if errores.rut %}campo-error{% endif %}">
+        <label for="rut">RUT <span class="obligatorio">*</span></label>
+        <input type="text" id="rut" name="rut" placeholder="12345678-9"
+               value="{{ datos.get('rut', '') }}">
+        <span class="mensaje-error" id="error-rut">{{ errores.get('rut', '') }}</span>
+      </div>
+
+      <div class="campo {% if errores.nombre %}campo-error{% endif %}">
+        <label for="nombre">Nombre completo <span class="obligatorio">*</span></label>
+        <input type="text" id="nombre" name="nombre" placeholder="Nombre Apellido"
+               value="{{ datos.get('nombre', '') }}">
+        <span class="mensaje-error" id="error-nombre">{{ errores.get('nombre', '') }}</span>
+      </div>
+
+      <div class="campo {% if errores.email %}campo-error{% endif %}">
+        <label for="email">Correo electrónico <span class="obligatorio">*</span></label>
+        <input type="email" id="email" name="email" placeholder="correo@ejemplo.cl"
+               value="{{ datos.get('email', '') }}">
+        <span class="mensaje-error" id="error-email">{{ errores.get('email', '') }}</span>
+      </div>
+
+      <div class="campo {% if errores.telefono %}campo-error{% endif %}">
+        <label for="telefono">Teléfono <span class="opcional">(opcional)</span></label>
+        <input type="tel" id="telefono" name="telefono" placeholder="+56912345678"
+               value="{{ datos.get('telefono', '') }}">
+        <span class="mensaje-error" id="error-telefono">{{ errores.get('telefono', '') }}</span>
+      </div>
+
+      <div class="campo">
+        <label for="direccion">Dirección <span class="opcional">(opcional)</span></label>
+        <input type="text" id="direccion" name="direccion"
+               value="{{ datos.get('direccion', '') }}">
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Tipo de miembro</legend>
+
+      <div class="campo {% if errores.tipo %}campo-error{% endif %}">
+        <label for="tipo">Tipo de miembro <span class="obligatorio">*</span></label>
+        <select id="tipo" name="tipo">
+          <option value="">Seleccione un tipo</option>
+          <option value="pregrado" {% if datos.get('tipo') == 'pregrado' %}selected{% endif %}>Estudiante de pregrado</option>
+          <option value="postgrado" {% if datos.get('tipo') == 'postgrado' %}selected{% endif %}>Estudiante de postgrado</option>
+          <option value="funcionario" {% if datos.get('tipo') == 'funcionario' %}selected{% endif %}>Funcionario/a</option>
+          <option value="academico" {% if datos.get('tipo') == 'academico' %}selected{% endif %}>Académico/a</option>
+        </select>
+        <span class="mensaje-error" id="error-tipo">{{ errores.get('tipo', '') }}</span>
+      </div>
+    </fieldset>
+
+    <fieldset id="campos-pregrado" class="oculto">
+      <legend>Datos de pregrado</legend>
+      <div class="campo {% if errores.carrera %}campo-error{% endif %}">
+        <label for="carrera">Carrera <span class="obligatorio">*</span></label>
+        <input type="text" id="carrera" name="carrera"
+               value="{{ datos.get('carrera', '') }}">
+        <span class="mensaje-error" id="error-carrera">{{ errores.get('carrera', '') }}</span>
+      </div>
+      <div class="campo {% if errores.anio_ingreso %}campo-error{% endif %}">
+        <label for="anio-ingreso">Año de ingreso <span class="obligatorio">*</span></label>
+        <input type="number" id="anio-ingreso" name="anio-ingreso" min="2000" max="{{ anio_actual }}"
+               value="{{ datos.get('anio_ingreso', '') }}">
+        <span class="mensaje-error" id="error-anio-ingreso">{{ errores.get('anio_ingreso', '') }}</span>
+      </div>
+    </fieldset>
+
+    <fieldset id="campos-postgrado" class="oculto">
+      <legend>Datos de postgrado</legend>
+      <div class="campo {% if errores.programa %}campo-error{% endif %}">
+        <label for="programa">Programa <span class="obligatorio">*</span></label>
+        <select id="programa" name="programa">
+          <option value="">Seleccione</option>
+          <option value="magister" {% if datos.get('programa') == 'magister' %}selected{% endif %}>Magíster</option>
+          <option value="doctorado" {% if datos.get('programa') == 'doctorado' %}selected{% endif %}>Doctorado</option>
+        </select>
+        <span class="mensaje-error" id="error-programa">{{ errores.get('programa', '') }}</span>
+      </div>
+      <div class="campo">
+        <label for="tutor">Tutor/a <span class="opcional">(opcional)</span></label>
+        <input type="text" id="tutor" name="tutor"
+               value="{{ datos.get('tutor', '') }}">
+      </div>
+    </fieldset>
+
+    <fieldset id="campos-funcionario" class="oculto">
+      <legend>Datos de funcionario/a</legend>
+      <div class="campo {% if errores.area %}campo-error{% endif %}">
+        <label for="area">Área o unidad <span class="obligatorio">*</span></label>
+        <input type="text" id="area" name="area"
+               value="{{ datos.get('area', '') }}">
+        <span class="mensaje-error" id="error-area">{{ errores.get('area', '') }}</span>
+      </div>
+      <div class="campo {% if errores.cargo %}campo-error{% endif %}">
+        <label for="cargo">Cargo <span class="obligatorio">*</span></label>
+        <input type="text" id="cargo" name="cargo"
+               value="{{ datos.get('cargo', '') }}">
+        <span class="mensaje-error" id="error-cargo">{{ errores.get('cargo', '') }}</span>
+      </div>
+    </fieldset>
+
+    <fieldset id="campos-academico" class="oculto">
+      <legend>Datos de académico/a</legend>
+      <div class="campo {% if errores.jerarquia %}campo-error{% endif %}">
+        <label for="jerarquia">Jerarquía <span class="obligatorio">*</span></label>
+        <select id="jerarquia" name="jerarquia">
+          <option value="">Seleccione</option>
+          <option value="instructor" {% if datos.get('jerarquia') == 'instructor' %}selected{% endif %}>Instructor/a</option>
+          <option value="asistente" {% if datos.get('jerarquia') == 'asistente' %}selected{% endif %}>Profesor/a Asistente</option>
+          <option value="asociado" {% if datos.get('jerarquia') == 'asociado' %}selected{% endif %}>Profesor/a Asociado/a</option>
+          <option value="titular" {% if datos.get('jerarquia') == 'titular' %}selected{% endif %}>Profesor/a Titular</option>
+        </select>
+        <span class="mensaje-error" id="error-jerarquia">{{ errores.get('jerarquia', '') }}</span>
+      </div>
+      <div class="campo {% if errores.departamento %}campo-error{% endif %}">
+        <label for="departamento">Departamento <span class="obligatorio">*</span></label>
+        <input type="text" id="departamento" name="departamento"
+               value="{{ datos.get('departamento', '') }}">
+        <span class="mensaje-error" id="error-departamento">{{ errores.get('departamento', '') }}</span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Ubicación</legend>
+      <div class="campo {% if errores.comuna_id %}campo-error{% endif %}">
+        <label for="comuna_id">Región y Comuna <span class="obligatorio">*</span></label>
+        <select id="comuna_id" name="comuna_id">
+          <option value="">Seleccione una comuna</option>
+          {% for region in regiones %}
+            <optgroup label="{{ region.nombre }}">
+              {% for comuna in region.comunas | sort(attribute='nombre') %}
+                <option value="{{ comuna.id }}"
+                  {% if datos.get('comuna_id') and datos.get('comuna_id')|int == comuna.id %}selected{% endif %}>
+                  {{ comuna.nombre }}
+                </option>
+              {% endfor %}
+            </optgroup>
+          {% endfor %}
+        </select>
+        <span class="mensaje-error" id="error-comuna">{{ errores.get('comuna_id', '') }}</span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Información de la actividad</legend>
+
+      <div class="campo {% if errores.nombre_actividad %}campo-error{% endif %}">
+        <label for="nombre-actividad">Nombre de la actividad <span class="obligatorio">*</span></label>
+        <input type="text" id="nombre-actividad" name="nombre-actividad"
+               value="{{ datos.get('nombre_actividad', '') }}">
+        <span class="mensaje-error" id="error-nombre-actividad">{{ errores.get('nombre_actividad', '') }}</span>
+      </div>
+
+      <div class="campo {% if errores.tipo_actividad %}campo-error{% endif %}">
+        <label for="tipo-actividad">Tipo de actividad <span class="obligatorio">*</span></label>
+        <select id="tipo-actividad" name="tipo-actividad">
+          <option value="">Seleccione un tipo</option>
+          <option value="arte" {% if datos.get('tipo_actividad') == 'arte' %}selected{% endif %}>Arte</option>
+          <option value="deporte" {% if datos.get('tipo_actividad') == 'deporte' %}selected{% endif %}>Deporte</option>
+          <option value="tecnología" {% if datos.get('tipo_actividad') == 'tecnología' %}selected{% endif %}>Tecnología</option>
+          <option value="social" {% if datos.get('tipo_actividad') == 'social' %}selected{% endif %}>Social</option>
+          <option value="recreación" {% if datos.get('tipo_actividad') == 'recreación' %}selected{% endif %}>Recreación</option>
+          <option value="otra" {% if datos.get('tipo_actividad') == 'otra' %}selected{% endif %}>Otra</option>
+        </select>
+        <span class="mensaje-error" id="error-tipo-actividad">{{ errores.get('tipo_actividad', '') }}</span>
+      </div>
+
+      <div class="campo {% if errores.descripcion %}campo-error{% endif %}">
+        <label for="descripcion">Descripción <span class="obligatorio">*</span></label>
+        <textarea id="descripcion" name="descripcion">{{ datos.get('descripcion', '') }}</textarea>
+        <span class="mensaje-error" id="error-descripcion">{{ errores.get('descripcion', '') }}</span>
+      </div>
+
+      <div class="campo {% if errores.enlace %}campo-error{% endif %}">
+        <label for="enlace">URL de contenido relacionado <span class="obligatorio">*</span></label>
+        <input type="url" id="enlace" name="enlace" placeholder="https://..."
+               value="{{ datos.get('enlace', '') }}">
+        <span class="mensaje-error" id="error-enlace">{{ errores.get('enlace', '') }}</span>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Horarios <span class="obligatorio">*</span></legend>
+      <p>Debe agregar al menos un horario.</p>
+      <div id="lista-horarios"></div>
+      <button type="button" class="btn btn-secundario" id="btn-agregar-horario">+ Agregar horario</button>
+      <span class="mensaje-error" id="error-horarios">{{ errores.get('horarios', '') }}</span>
+    </fieldset>
+
+    <fieldset>
+      <legend>Archivos <span class="obligatorio">*</span></legend>
+      <p>Debe adjuntar al menos un archivo de foto o video.</p>
+      <div class="campo {% if errores.archivos %}campo-error{% endif %}">
+        <label for="archivos">Fotos o videos</label>
+        <input type="file" id="archivos" name="archivos" multiple
+               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,.mp4,.webm,.ogg,.mov,.avi">
+        <span class="mensaje-error" id="error-archivos">{{ errores.get('archivos', '') }}</span>
+      </div>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primario">Registrar miembro y actividad</button>
+
+  </form>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/registro.js') }}"></script>
+  <script>
+    inicializarHorarios({{ horarios | tojson }});
+    {% if datos.get('tipo') %}
+    document.getElementById("tipo").dispatchEvent(new Event("change"));
+    {% endif %}
+  </script>
+{% endblock %}

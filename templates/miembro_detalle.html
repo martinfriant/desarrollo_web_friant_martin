@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+
+{% block title %}DCC - {{ miembro.nombre }}{% endblock %}
+
+{% block contenido %}
+  <h2>{{ miembro.nombre }}</h2>
+  <p><a href="{{ url_for('miembros') }}">&larr; Volver al listado</a></p>
+
+  <section>
+    <h3>Datos personales</h3>
+    <table>
+      <tbody>
+        <tr><th scope="row">RUT</th><td>{{ miembro.rut }}</td></tr>
+        <tr><th scope="row">Correo</th><td>{{ miembro.email }}</td></tr>
+        <tr><th scope="row">Teléfono</th><td>{{ miembro.telefono if miembro.telefono else '-' }}</td></tr>
+        <tr><th scope="row">Dirección</th><td>{{ miembro.direccion if miembro.direccion else '-' }}</td></tr>
+        <tr><th scope="row">Comuna</th><td>{{ miembro.comuna.nombre }}, {{ miembro.comuna.region.nombre }}</td></tr>
+        <tr>
+          <th scope="row">Tipo</th>
+          <td>
+            {% if miembro.tipo == 'pregrado' %}Estudiante de pregrado
+            {% elif miembro.tipo == 'postgrado' %}Estudiante de postgrado
+            {% elif miembro.tipo == 'funcionario' %}Funcionario/a
+            {% elif miembro.tipo == 'academico' %}Académico/a
+            {% endif %}
+          </td>
+        </tr>
+        <tr><th scope="row">Fecha de registro</th><td>{{ miembro.fecha_registro.strftime('%d/%m/%Y %H:%M') }}</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  {% if miembro.tipo == 'pregrado' %}
+    <section>
+      <h3>Datos de pregrado</h3>
+      <table>
+        <tbody>
+          <tr><th scope="row">Carrera</th><td>{{ miembro.carrera }}</td></tr>
+          <tr><th scope="row">Año de ingreso</th><td>{{ miembro.anio_ingreso }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+  {% elif miembro.tipo == 'postgrado' %}
+    <section>
+      <h3>Datos de postgrado</h3>
+      <table>
+        <tbody>
+          <tr><th scope="row">Programa</th><td>{{ miembro.programa }}</td></tr>
+          <tr><th scope="row">Tutor/a</th><td>{{ miembro.tutor if miembro.tutor else '-' }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+  {% elif miembro.tipo == 'funcionario' %}
+    <section>
+      <h3>Datos de funcionario/a</h3>
+      <table>
+        <tbody>
+          <tr><th scope="row">Área o unidad</th><td>{{ miembro.area }}</td></tr>
+          <tr><th scope="row">Cargo</th><td>{{ miembro.cargo }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+  {% elif miembro.tipo == 'academico' %}
+    <section>
+      <h3>Datos de académico/a</h3>
+      <table>
+        <tbody>
+          <tr><th scope="row">Jerarquía</th><td>{{ miembro.jerarquia }}</td></tr>
+          <tr><th scope="row">Departamento</th><td>{{ miembro.departamento }}</td></tr>
+        </tbody>
+      </table>
+    </section>
+  {% endif %}
+
+  <section>
+    <h3>Actividades registradas</h3>
+    {% if actividades %}
+      <table>
+        <thead>
+          <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Día</th>
+            <th scope="col">Hora inicio</th>
+            <th scope="col">Hora término</th>
+            <th scope="col">Enlace</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for act in actividades %}
+            <tr>
+              <td>{{ act.nombre }}</td>
+              <td>{{ act.tipo | capitalize }}</td>
+              <td>{{ act.dia | capitalize }}</td>
+              <td>{{ act.hora_inicio }}</td>
+              <td>{{ act.hora_fin }}</td>
+              <td>
+                {% if act.enlace %}
+                  <a href="{{ act.enlace }}" target="_blank" rel="noopener noreferrer">Ver enlace</a>
+                {% else %}-{% endif %}
+              </td>
+            </tr>
+            {% if act.fotos %}
+              <tr>
+                <td colspan="6">
+                  {% for foto in act.fotos %}
+                    {% set ext = foto.nombre_archivo.rsplit('.', 1)[-1].lower() %}
+                    {% if ext in ['mp4', 'webm', 'ogg', 'mov', 'avi'] %}
+                      <video class="miniatura-media" controls>
+                        <source src="{{ url_for('static', filename=foto.ruta_archivo) }}"
+                                type="video/{{ ext if ext in ['mp4', 'webm', 'ogg'] else 'mp4' }}">
+                      </video>
+                    {% else %}
+                      <img src="{{ url_for('static', filename=foto.ruta_archivo) }}"
+                           alt="{{ foto.nombre_archivo }}"
+                           class="miniatura-media">
+                    {% endif %}
+                  {% endfor %}
+                </td>
+              </tr>
+            {% endif %}
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>Este miembro no tiene actividades registradas.</p>
+    {% endif %}
+  </section>
+{% endblock %}

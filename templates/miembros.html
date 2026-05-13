@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block title %}DCC - Listado de Miembros{% endblock %}
+
+{% block contenido %}
+  <h2>Listado de Miembros</h2>
+
+  <section>
+    <h3>Filtrar</h3>
+    <form method="GET" action="{{ url_for('miembros') }}" class="controles">
+      <div class="campo">
+        <label for="filtro-tipo">Tipo de miembro</label>
+        <select id="filtro-tipo" name="tipo">
+          <option value="">Todos</option>
+          <option value="pregrado"    {% if tipo == 'pregrado'    %}selected{% endif %}>Estudiante pregrado</option>
+          <option value="postgrado"   {% if tipo == 'postgrado'   %}selected{% endif %}>Estudiante postgrado</option>
+          <option value="funcionario" {% if tipo == 'funcionario' %}selected{% endif %}>Funcionario/a</option>
+          <option value="academico"   {% if tipo == 'academico'   %}selected{% endif %}>Académico/a</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primario">Aplicar</button>
+    </form>
+  </section>
+
+  <section>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Nombre</th>
+          <th scope="col">RUT</th>
+          <th scope="col">Correo</th>
+          <th scope="col">Teléfono</th>
+          <th scope="col">Tipo</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in miembros %}
+          <tr class="fila-miembro" onclick="window.location='{{ url_for('miembro_detalle', id=m.id) }}'">
+            <td>{{ m.nombre }}</td>
+            <td>{{ m.rut }}</td>
+            <td>{{ m.email }}</td>
+            <td>{{ m.telefono if m.telefono else '-' }}</td>
+            <td>
+              {% if m.tipo == 'pregrado' %}Est. Pregrado
+              {% elif m.tipo == 'postgrado' %}Est. Postgrado
+              {% elif m.tipo == 'funcionario' %}Funcionario/a
+              {% elif m.tipo == 'academico' %}Académico/a
+              {% endif %}
+            </td>
+          </tr>
+        {% else %}
+          <tr><td colspan="5">No hay miembros que coincidan con el filtro.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <nav class="paginacion" aria-label="Paginación de miembros">
+      {% if paginacion.has_prev %}
+        <a href="{{ url_for('miembros', page=paginacion.prev_num, tipo=tipo) }}" class="btn btn-secundario">Anterior</a>
+      {% else %}
+        <button type="button" class="btn btn-secundario" disabled>Anterior</button>
+      {% endif %}
+
+      <span>Página {{ paginacion.page }} de {{ paginacion.pages if paginacion.pages > 0 else 1 }}</span>
+
+      {% if paginacion.has_next %}
+        <a href="{{ url_for('miembros', page=paginacion.next_num, tipo=tipo) }}" class="btn btn-secundario">Siguiente</a>
+      {% else %}
+        <button type="button" class="btn btn-secundario" disabled>Siguiente</button>
+      {% endif %}
+    </nav>
+  </section>
+{% endblock %}
