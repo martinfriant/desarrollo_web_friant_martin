@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f5f5f5;
+}
+
+.contenedor {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #333;
+}
+
+#input-busqueda {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+#resultados {
+    margin-top: 20px;
+}
+
+.actividad {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 16px;
+    margin-bottom: 12px;
+    /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+}
+
+.actividad h3 {
+    margin: 0 0 8px 0;
+    color: #333;
+}
+
+.actividad p {
+    margin: 4px 0;
+}
+
+.actividad .descripcion {
+    color: #777;
+    font-style: italic;
+}
+
+.nota-info {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.nota-valor {
+    font-weight: bold;
+    color: #333;
+}
+
+.btn-evaluar {
+    background: #4a90d9;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-evaluar:hover {
+    background: #3a7bc8;
+}
+
+.select-nota {
+    padding: 4px 8px;
+    font-size: 14px;
+}
+
+.mensaje {
+    color: #888;
+    font-size: 16px;
+    text-align: center;
+    margin-top: 40px;
+}
+
+mark {
+    background-color: #fff176;
+    padding: 0;
+}
